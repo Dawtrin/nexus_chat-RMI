@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.nexus.chat.desktop.controller.LoginController"
+           styleClass="app-shell"
+           stylesheets="@../css/design-system.css, @../css/login.css">
+
+    <VBox alignment="CENTER" spacing="24" maxWidth="480">
+        <!-- Brand Header -->
+        <VBox alignment="CENTER" spacing="8">
+            <HBox alignment="CENTER" spacing="10">
+                <Label text="NEXUS" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: -color-text-primary;" />
+                <Label text="CHAT" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: -color-accent;" />
+                <Label text="v1.0" styleClass="brand-badge" />
+            </HBox>
+            <Label text="Enterprise Distributed Chat with Java RMI Replication" styleClass="text-secondary" />
+        </VBox>
+
+        <!-- Login / Connection Card -->
+        <VBox spacing="16" styleClass="login-card">
+            <Label text="Connect to Cluster" styleClass="title-medium" />
+
+            <!-- Server Profile -->
+            <VBox spacing="6">
+                <Label text="TARGET SERVER PROFILE" styleClass="form-label" />
+                <ComboBox fx:id="serverProfileCombo" maxWidth="Infinity" />
+            </VBox>
+
+            <!-- Host & Port Row -->
+            <HBox spacing="12">
+                <VBox spacing="6" HBox.hgrow="ALWAYS">
+                    <Label text="SERVER HOST / IP" styleClass="form-label" />
+                    <TextField fx:id="hostField" promptText="127.0.0.1 or LAN IP" />
+                </VBox>
+                <VBox spacing="6" prefWidth="120">
+                    <Label text="RMI PORT" styleClass="form-label" />
+                    <TextField fx:id="portField" promptText="1099" />
+                </VBox>
+            </HBox>
+
+            <!-- Username -->
+            <VBox spacing="6">
+                <Label text="DISPLAY NAME / USERNAME" styleClass="form-label" />
+                <TextField fx:id="usernameField" promptText="e.g. Alice, Bob, Engineer-1" />
+            </VBox>
+
+            <!-- Status & Progress -->
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <ProgressIndicator fx:id="progressIndicator" prefWidth="18" prefHeight="18" />
+                <Label fx:id="statusLabel" styleClass="status-label" wrapText="true" HBox.hgrow="ALWAYS" />
+            </HBox>
+
+            <!-- Actions -->
+            <VBox spacing="10" style="-fx-padding: 8px 0 0 0;">
+                <Button fx:id="connectButton" text="Connect &amp; Enter Chat" onAction="#onConnectClicked"
+                        maxWidth="Infinity" styleClass="btn-primary" defaultButton="true" />
+
+                <Button fx:id="openAdminButton" text="Open NEXUS CONTROL Admin Dashboard" onAction="#onAdminClicked"
+                        maxWidth="Infinity" styleClass="btn-secondary" />
+            </VBox>
+        </VBox>
+
+        <!-- Footer -->
+        <Label text="Network Distributed Systems Laboratory • Physical Machines &amp; VM Supported" styleClass="text-muted" style="-fx-font-size: 11px;" />
+    </VBox>
+</StackPane>

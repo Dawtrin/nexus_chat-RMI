@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.nexus.chat.desktop.controller.ChatController"
+            styleClass="app-shell"
+            stylesheets="@../css/design-system.css, @../css/chat.css">
+
+    <!-- Left Navigation Rail -->
+    <left>
+        <HBox>
+            <!-- Thin Navigation Rail -->
+            <VBox spacing="16" alignment="TOP_CENTER" prefWidth="64"
+                  style="-fx-background-color: -color-surface-elevated; -fx-border-color: transparent -color-border transparent transparent; -fx-padding: 16px 8px;">
+
+                <!-- Monogram Logo -->
+                <StackPane prefWidth="40" prefHeight="40"
+                           style="-fx-background-color: -color-accent; -fx-background-radius: 8px;">
+                    <Label text="N" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #111318;" />
+                </StackPane>
+
+                <Separator style="-fx-background-color: -color-border;" />
+
+                <!-- Nav Buttons -->
+                <VBox spacing="8" alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
+                    <Button text="Chat" styleClass="btn-nav, active" prefWidth="50" style="-fx-font-size: 11px;" />
+                    <Button text="Admin" onAction="#onAdminNavClicked" styleClass="btn-nav" prefWidth="50" style="-fx-font-size: 11px;" />
+                    <Button text="Config" onAction="#onSettingsNavClicked" styleClass="btn-nav" prefWidth="50" style="-fx-font-size: 11px;" />
+                </VBox>
+
+                <!-- Disconnect Action -->
+                <Button text="Exit" onAction="#onDisconnectNavClicked" styleClass="btn-danger" prefWidth="50" style="-fx-font-size: 11px; -fx-padding: 6px;" />
+            </VBox>
+
+            <!-- Channels & Rooms Sidebar -->
+            <VBox spacing="12" prefWidth="240"
+                  style="-fx-background-color: -color-surface; -fx-border-color: transparent -color-border transparent transparent; -fx-padding: 16px 12px;">
+
+                <!-- User & Server Status Header -->
+                <VBox spacing="4">
+                    <Label fx:id="currentUserLabel" text="\@user" styleClass="title-small" />
+                    <Label fx:id="serverStatusBadge" text="CONNECTED · SERVER-A" styleClass="badge, badge-online" />
+                </VBox>
+
+                <Separator style="-fx-background-color: -color-border;" />
+
+                <!-- Room Catalog -->
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="CHANNELS" styleClass="text-secondary" style="-fx-font-size: 11px; -fx-font-weight: bold;" />
+                </HBox>
+
+                <ListView fx:id="roomListView" VBox.vgrow="ALWAYS" styleClass="room-list-view" />
+            </VBox>
+        </HBox>
+    </left>
+
+    <!-- Main Chat Workspace -->
+    <center>
+        <BorderPane>
+            <!-- Room Header -->
+            <top>
+                <HBox alignment="CENTER_LEFT" spacing="12"
+                      style="-fx-background-color: -color-surface; -fx-border-color: transparent transparent -color-border transparent; -fx-padding: 14px 20px;">
+                    <VBox spacing="2" HBox.hgrow="ALWAYS">
+                        <Label fx:id="currentRoomTitle" text="# general" styleClass="title-medium" />
+                        <Label fx:id="currentRoomDesc" text="Main discussion channel" styleClass="text-secondary" />
+                    </VBox>
+                    <Label text="BIDIRECTIONAL REPLICATION ACTIVE" styleClass="badge, badge-online" />
+                </HBox>
+            </top>
+
+            <!-- Message Timeline Center -->
+            <center>
+                <StackPane>
+                    <!-- Messages List -->
+                    <ListView fx:id="messageListView" styleClass="message-list-view" />
+
+                    <!-- Empty State Placeholder -->
+                    <VBox fx:id="emptyStateBox" alignment="CENTER" spacing="12" styleClass="empty-state-box">
+                        <Label text="No messages yet in this room" styleClass="empty-state-title" />
+                        <Label text="Messages sent here are stored locally and replicated to peer server nodes." styleClass="empty-state-desc" />
+                    </VBox>
+                </StackPane>
+            </center>
+
+            <!-- Bottom Composer -->
+            <bottom>
+                <VBox spacing="8" style="-fx-background-color: -color-surface; -fx-border-color: -color-border transparent transparent transparent; -fx-padding: 14px 20px;">
+                    <HBox spacing="12" alignment="CENTER">
+                        <TextArea fx:id="messageInput" onKeyPressed="#onInputKeyPressed"
+                                  promptText="Type a message (Enter to send, Shift+Enter for newline)..."
+                                  prefRowCount="2" wrapText="true" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="sendButton" text="Send" onAction="#onSendMessage"
+                                styleClass="btn-primary" prefHeight="48" prefWidth="90" />
+                    </HBox>
+                    <HBox alignment="CENTER_RIGHT" spacing="12">
+                        <Label text="Enter to send • Shift+Enter for new line" styleClass="text-muted" style="-fx-font-size: 11px;" HBox.hgrow="ALWAYS" />
+                        <Label fx:id="charCounterLabel" text="0/4000" styleClass="text-muted" style="-fx-font-size: 11px;" />
+                    </HBox>
+                </VBox>
+            </bottom>
+        </BorderPane>
+    </center>
+</BorderPane>

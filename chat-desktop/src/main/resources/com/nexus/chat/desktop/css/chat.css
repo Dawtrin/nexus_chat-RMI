@@ -1,0 +1,106 @@
+/* =============================================================================
+   NEXUS CHAT — Chat Timeline & Message Styling
+   ============================================================================= */
+
+/* Room List */
+.room-list-view {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.room-list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 6px;
+    -fx-text-fill: -color-text-secondary;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.room-list-cell:hover {
+    -fx-background-color: -color-surface-hover;
+    -fx-text-fill: -color-text-primary;
+}
+
+.room-list-cell:selected {
+    -fx-background-color: -color-accent-subtle;
+    -fx-text-fill: -color-accent;
+}
+
+/* Timeline Message Bubbles */
+.message-list-view {
+    -fx-background-color: -color-bg;
+    -fx-border-color: transparent;
+}
+
+.message-row {
+    -fx-padding: 6px 12px;
+}
+
+.message-bubble {
+    -fx-background-radius: 10px;
+    -fx-padding: 10px 14px;
+    -fx-max-width: 580px;
+}
+
+.message-bubble-other {
+    -fx-background-color: -color-surface-elevated;
+    -fx-border-color: -color-border;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+}
+
+.message-bubble-own {
+    -fx-background-color: #2b214a;
+    -fx-border-color: #6d28d9;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+}
+
+.message-sender {
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-text-fill: -color-accent;
+}
+
+.message-sender-own {
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-text-fill: #c4b5fd;
+}
+
+.message-time {
+    -fx-font-size: 10px;
+    -fx-text-fill: -color-text-muted;
+}
+
+.message-content {
+    -fx-text-fill: -color-text-primary;
+    -fx-font-size: 13px;
+    -fx-wrap-text: true;
+}
+
+.message-origin-badge {
+    -fx-font-size: 9px;
+    -fx-text-fill: -color-text-muted;
+    -fx-background-color: -color-surface;
+    -fx-background-radius: 4px;
+    -fx-padding: 1px 4px;
+}
+
+/* Empty State */
+.empty-state-box {
+    -fx-alignment: CENTER;
+    -fx-padding: 40px;
+}
+
+.empty-state-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-text-primary;
+}
+
+.empty-state-desc {
+    -fx-font-size: 13px;
+    -fx-text-fill: -color-text-muted;
+}

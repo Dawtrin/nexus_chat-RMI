@@ -1,0 +1,17 @@
+# =============================================================================
+# NEXUS Distributed Chat — Desktop Client Configuration Profile Example
+# =============================================================================
+
+# Server A Profile
+server.a.name=Server Node A
+server.a.host=192.168.1.101
+server.a.port=1099
+
+# Server B Profile
+server.b.name=Server Node B
+server.b.host=192.168.1.102
+server.b.port=1099
+
+# UI Defaults
+client.default.username=Student-VM1
+client.poll.interval.ms=1000

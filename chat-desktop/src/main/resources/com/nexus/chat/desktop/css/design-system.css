@@ -1,0 +1,306 @@
+/* =============================================================================
+   NEXUS CHAT — Dark Enterprise Design System
+   Modern, Technical, Restrained Violet Accents, High Contrast
+   ============================================================================= */
+
+.root {
+    -fx-font-family: "Segoe UI", "Inter", -apple-system, sans-serif;
+    -fx-font-size: 13px;
+    -fx-base: #111318;
+    -fx-background: #111318;
+
+    /* Theme Tokens */
+    -color-bg: #111318;
+    -color-surface: #191c24;
+    -color-surface-elevated: #252936;
+    -color-surface-hover: #2d3242;
+    -color-border: #343946;
+    -color-border-subtle: #262a34;
+
+    -color-text-primary: #f3f4f6;
+    -color-text-secondary: #a0a5b4;
+    -color-text-muted: #6b7280;
+
+    -color-accent: #a78bfa;
+    -color-accent-hover: #c4b5fd;
+    -color-accent-subtle: rgba(167, 139, 250, 0.15);
+
+    -color-success: #36d399;
+    -color-success-subtle: rgba(54, 211, 153, 0.15);
+    -color-warning: #f5b84b;
+    -color-warning-subtle: rgba(245, 184, 75, 0.15);
+    -color-error: #f87171;
+    -color-error-subtle: rgba(248, 113, 113, 0.15);
+    -color-info: #60a5fa;
+}
+
+/* Base Window Background */
+.app-shell {
+    -fx-background-color: -color-bg;
+}
+
+/* Typography Helpers */
+.title-large {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-text-primary;
+}
+
+.title-medium {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-text-primary;
+}
+
+.title-small {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-text-primary;
+}
+
+.text-secondary {
+    -fx-text-fill: -color-text-secondary;
+}
+
+.text-muted {
+    -fx-text-fill: -color-text-muted;
+}
+
+.text-mono {
+    -fx-font-family: "Consolas", "JetBrains Mono", monospace;
+    -fx-font-size: 12px;
+}
+
+/* Card & Surface Containers */
+.card {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 16px;
+}
+
+.card-elevated {
+    -fx-background-color: -color-surface-elevated;
+    -fx-border-color: -color-border;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 16px;
+}
+
+/* Input Fields */
+.text-field, .text-area, .combo-box {
+    -fx-background-color: -color-surface-elevated;
+    -fx-border-color: -color-border;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-text-fill: -color-text-primary;
+    -fx-prompt-text-fill: -color-text-muted;
+    -fx-padding: 8px 12px;
+}
+
+.text-field:focused, .text-area:focused, .combo-box:focused {
+    -fx-border-color: -color-accent;
+    -fx-background-color: #2b3040;
+}
+
+/* Buttons */
+.btn-primary {
+    -fx-background-color: -color-accent;
+    -fx-text-fill: #111318;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-padding: 9px 18px;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: -color-accent-hover;
+}
+
+.btn-secondary {
+    -fx-background-color: -color-surface-elevated;
+    -fx-border-color: -color-border;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-text-fill: -color-text-primary;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: -color-surface-hover;
+    -fx-border-color: -color-accent;
+}
+
+.btn-danger {
+    -fx-background-color: -color-error-subtle;
+    -fx-border-color: -color-error;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-text-fill: -color-error;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+.btn-danger:hover {
+    -fx-background-color: -color-error;
+    -fx-text-fill: #ffffff;
+}
+
+.btn-nav {
+    -fx-background-color: transparent;
+    -fx-text-fill: -color-text-secondary;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px 12px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-cursor: hand;
+}
+
+.btn-nav:hover {
+    -fx-background-color: -color-surface-hover;
+    -fx-text-fill: -color-text-primary;
+}
+
+.btn-nav.active {
+    -fx-background-color: -color-accent-subtle;
+    -fx-text-fill: -color-accent;
+    -fx-font-weight: bold;
+}
+
+/* Status Badges */
+.badge {
+    -fx-background-radius: 12px;
+    -fx-padding: 3px 10px;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.badge-online {
+    -fx-background-color: -color-success-subtle;
+    -fx-text-fill: -color-success;
+    -fx-border-color: -color-success;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+}
+
+.badge-degraded {
+    -fx-background-color: -color-warning-subtle;
+    -fx-text-fill: -color-warning;
+    -fx-border-color: -color-warning;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+}
+
+.badge-unreachable, .badge-error {
+    -fx-background-color: -color-error-subtle;
+    -fx-text-fill: -color-error;
+    -fx-border-color: -color-error;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+}
+
+.badge-unknown {
+    -fx-background-color: -color-border-subtle;
+    -fx-text-fill: -color-text-muted;
+    -fx-border-color: -color-border;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+}
+
+/* TableView Dark Styling */
+.table-view {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: -color-surface-elevated;
+    -fx-border-color: transparent transparent -color-border transparent;
+    -fx-border-width: 1px;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-size: 36px;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: -color-text-secondary;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+}
+
+.table-row-cell {
+    -fx-background-color: -color-surface;
+    -fx-border-color: transparent transparent -color-border-subtle transparent;
+    -fx-border-width: 1px;
+    -fx-cell-size: 34px;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #1c202a;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: -color-surface-hover;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: -color-accent-subtle;
+}
+
+.table-cell {
+    -fx-text-fill: -color-text-primary;
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* ScrollBar Styling */
+.scroll-bar:vertical, .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: -color-border;
+    -fx-background-radius: 4px;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: -color-accent;
+}
+
+/* TabPane Styling */
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab-pane .tab {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border -color-border transparent -color-border;
+    -fx-border-radius: 6px 6px 0 0;
+    -fx-background-radius: 6px 6px 0 0;
+    -fx-padding: 6px 14px;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: -color-surface-elevated;
+    -fx-border-color: -color-accent -color-border transparent -color-border;
+    -fx-border-width: 2px 1px 0 1px;
+}
+
+.tab-pane .tab .tab-label {
+    -fx-text-fill: -color-text-secondary;
+    -fx-font-weight: bold;
+}
+
+.tab-pane .tab:selected .tab-label {
+    -fx-text-fill: -color-text-primary;
+}

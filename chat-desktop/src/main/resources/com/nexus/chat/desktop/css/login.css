@@ -1,0 +1,36 @@
+/* =============================================================================
+   NEXUS CHAT — Login & Server Selection Styling
+   ============================================================================= */
+
+.login-card {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-border-width: 1px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 32px;
+    -fx-max-width: 460px;
+}
+
+.brand-badge {
+    -fx-background-color: -color-accent-subtle;
+    -fx-border-color: -color-accent;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-text-fill: -color-accent;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+    -fx-padding: 3px 8px;
+}
+
+.form-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-text-secondary;
+}
+
+.status-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: -color-text-muted;
+}

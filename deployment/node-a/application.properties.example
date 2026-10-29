@@ -1,0 +1,36 @@
+# =============================================================================
+# NEXUS Distributed Chat — Node A (Physical Machine A) Configuration
+# =============================================================================
+
+# Server Node Identity
+server.id=server-a
+
+# Physical Machine A reachable LAN IP (e.g. 192.168.1.101)
+# Advertised to remote clients and Peer B
+server.advertised.host=192.168.1.101
+
+# Local RMI Ports
+server.rmi.registry.port=1099
+server.rmi.service.port=1100
+
+# Security Token for Administrative Telemetry Monitoring
+server.admin.token=nexus-admin-secret-a
+
+# -----------------------------------------------------------------------------
+# Peer Server Node B Endpoint
+# -----------------------------------------------------------------------------
+server.peer.id=server-b
+server.peer.host=192.168.1.102
+server.peer.registry.port=1099
+server.peer.service.port=1100
+
+# -----------------------------------------------------------------------------
+# Database A (Local MySQL / MariaDB on Computer A)
+# -----------------------------------------------------------------------------
+database.enabled=true
+database.host=127.0.0.1
+database.port=3306
+database.name=nexus_chat_a
+database.username=nexus_user
+database.password=PLACEHOLDER_DB_PASSWORD
+database.pool.max-size=10

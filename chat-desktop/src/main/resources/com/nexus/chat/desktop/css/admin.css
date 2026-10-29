@@ -1,0 +1,78 @@
+/* =============================================================================
+   NEXUS CONTROL — Admin Dashboard Styling
+   ============================================================================= */
+
+.kpi-card {
+    -fx-background-color: -color-surface;
+    -fx-border-color: -color-border;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 16px;
+    -fx-min-width: 220px;
+}
+
+.kpi-title {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-text-secondary;
+}
+
+.kpi-value {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-text-primary;
+}
+
+.kpi-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: -color-text-muted;
+}
+
+/* Topology Node Box */
+.topology-node {
+    -fx-background-color: -color-surface-elevated;
+    -fx-border-color: -color-accent;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 14px;
+    -fx-min-width: 200px;
+}
+
+.topology-node-peer {
+    -fx-background-color: -color-surface-elevated;
+    -fx-border-color: -color-border;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 14px;
+    -fx-min-width: 200px;
+}
+
+.topology-link {
+    -fx-stroke: -color-border;
+    -fx-stroke-width: 2px;
+    -fx-stroke-dash-array: 6 4;
+}
+
+.topology-link-active {
+    -fx-stroke: -color-success;
+    -fx-stroke-width: 2px;
+}
+
+/* Event Level Indicators */
+.log-info {
+    -fx-text-fill: -color-info;
+    -fx-font-weight: bold;
+}
+
+.log-warn {
+    -fx-text-fill: -color-warning;
+    -fx-font-weight: bold;
+}
+
+.log-error {
+    -fx-text-fill: -color-error;
+    -fx-font-weight: bold;
+}

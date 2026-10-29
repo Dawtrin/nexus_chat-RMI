@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.nexus.chat.desktop.controller.AdminController"
+            styleClass="app-shell"
+            stylesheets="@../css/design-system.css, @../css/admin.css">
+
+    <!-- Top Admin Header & Diagnostic Connection Bar -->
+    <top>
+        <VBox style="-fx-background-color: -color-surface; -fx-border-color: transparent transparent -color-border transparent;">
+            <!-- App Bar -->
+            <HBox alignment="CENTER_LEFT" spacing="16" style="-fx-padding: 12px 24px;">
+                <HBox alignment="CENTER_LEFT" spacing="8">
+                    <Label text="NEXUS" styleClass="title-medium" />
+                    <Label text="CONTROL" styleClass="title-medium" style="-fx-text-fill: -color-accent;" />
+                    <Label text="CLUSTER MONITOR" styleClass="badge, badge-unknown" />
+                </HBox>
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Button text="← Back to Chat" onAction="#onBackToChatClicked" styleClass="btn-secondary" />
+            </HBox>
+
+            <Separator style="-fx-background-color: -color-border-subtle;" />
+
+            <!-- Diagnostic Connection Bar -->
+            <HBox alignment="CENTER_LEFT" spacing="12" style="-fx-padding: 10px 24px;">
+                <Label text="TARGET:" styleClass="form-label" />
+                <TextField fx:id="adminHostField" prefWidth="120" promptText="Host/IP" />
+                <TextField fx:id="adminPortField" prefWidth="70" promptText="Port" />
+
+                <Label text="ADMIN TOKEN:" styleClass="form-label" />
+                <PasswordField fx:id="adminTokenField" prefWidth="160" promptText="nexus-admin-secret" />
+
+                <Button fx:id="refreshButton" text="Fetch Live Telemetry" onAction="#onRefreshClicked" styleClass="btn-primary" />
+                <CheckBox fx:id="autoRefreshCheck" text="Auto-refresh (3s)" styleClass="text-secondary" />
+
+                <Region HBox.hgrow="ALWAYS" />
+
+                <Label fx:id="adminStatusLabel" text="Ready to query telemetry" styleClass="text-secondary" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- Main Dashboard Area -->
+    <center>
+        <VBox spacing="20" style="-fx-padding: 20px 24px;">
+            <!-- KPI Summary Cards Grid -->
+            <HBox spacing="16">
+                <!-- Card 1: Server Status -->
+                <VBox spacing="4" styleClass="kpi-card" HBox.hgrow="ALWAYS">
+                    <Label text="SERVER NODE STATUS" styleClass="kpi-title" />
+                    <HBox alignment="BASELINE_LEFT" spacing="8">
+                        <Label fx:id="kpiServerId" text="—" styleClass="kpi-value" />
+                        <Label fx:id="kpiServerStatus" text="NOT CONNECTED" styleClass="badge, badge-unknown" />
+                    </HBox>
+                    <Label fx:id="kpiUptime" text="Uptime: —" styleClass="kpi-subtitle" />
+                </VBox>
+
+                <!-- Card 2: Peer Replication Link -->
+                <VBox spacing="4" styleClass="kpi-card" HBox.hgrow="ALWAYS">
+                    <Label text="PEER REPLICATION LINK" styleClass="kpi-title" />
+                    <Label fx:id="kpiPeerStatus" text="UNKNOWN" styleClass="kpi-value" />
+                    <Label fx:id="kpiPeerEndpoint" text="Peer: —" styleClass="kpi-subtitle" />
+                </VBox>
+
+                <!-- Card 3: Database Health -->
+                <VBox spacing="4" styleClass="kpi-card" HBox.hgrow="ALWAYS">
+                    <Label text="DATABASE PERSISTENCE" styleClass="kpi-title" />
+                    <Label fx:id="kpiDbStatus" text="NOT MONITORED" styleClass="kpi-value" />
+                    <Label fx:id="kpiDbName" text="—" styleClass="kpi-subtitle" />
+                </VBox>
+
+                <!-- Card 4: Active Client Sessions -->
+                <VBox spacing="4" styleClass="kpi-card" HBox.hgrow="ALWAYS">
+                    <Label text="OBSERVED CLIENT SESSIONS" styleClass="kpi-title" />
+                    <Label fx:id="kpiActiveSessions" text="0" styleClass="kpi-value" />
+                    <Label text="Server-side socket observation" styleClass="kpi-subtitle" />
+                </VBox>
+            </HBox>
+
+            <!-- Detailed Views TabPane -->
+            <TabPane VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
+                <!-- Tab 1: Client Sessions & Observed IPs -->
+                <Tab text="Connected Clients &amp; Observed IPs">
+                    <VBox spacing="10" style="-fx-padding: 12px 0 0 0;">
+                        <Label text="Server-Side Observed Client Connections (Physical / Virtual Machine Endpoints)" styleClass="text-secondary" style="-fx-font-size: 11px;" />
+                        <TableView fx:id="sessionTable" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colSessionIp" text="REMOTE IP (OBSERVED)" prefWidth="160" />
+                                <TableColumn fx:id="colSessionUser" text="USERNAME" prefWidth="130" />
+                                <TableColumn fx:id="colSessionId" text="SESSION ID" prefWidth="260" />
+                                <TableColumn fx:id="colSessionStatus" text="STATUS" prefWidth="110" />
+                                <TableColumn fx:id="colSessionConnected" text="CONNECTED AT" prefWidth="110" />
+                                <TableColumn fx:id="colSessionLastSeen" text="LAST SEEN" prefWidth="110" />
+                            </columns>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                            </columnResizePolicy>
+                        </TableView>
+                    </VBox>
+                </Tab>
+
+                <!-- Tab 2: System Logs & Operational Diagnostics -->
+                <Tab text="Operational Logs &amp; Diagnostics">
+                    <VBox spacing="10" style="-fx-padding: 12px 0 0 0;">
+                        <Label text="Real-time Server Operational Events &amp; Replication Tracing" styleClass="text-secondary" style="-fx-font-size: 11px;" />
+                        <TableView fx:id="eventTable" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colEventTime" text="TIME" prefWidth="120" />
+                                <TableColumn fx:id="colEventSeverity" text="SEVERITY" prefWidth="90" />
+                                <TableColumn fx:id="colEventComponent" text="COMPONENT" prefWidth="120" />
+                                <TableColumn fx:id="colEventMessage" text="EVENT MESSAGE" prefWidth="540" />
+                            </columns>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                            </columnResizePolicy>
+                        </TableView>
+                    </VBox>
+                </Tab>
+            </TabPane>
+        </VBox>
+    </center>
+</BorderPane>

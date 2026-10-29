@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.nexus.chat.desktop.controller.SettingsController"
+           styleClass="app-shell"
+           stylesheets="@../css/design-system.css">
+
+    <VBox alignment="CENTER" spacing="24" maxWidth="560">
+        <HBox alignment="CENTER_LEFT" spacing="12">
+            <Label text="Configuration &amp; System Info" styleClass="title-large" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="← Back" onAction="#onBackClicked" styleClass="btn-secondary" />
+        </HBox>
+
+        <VBox spacing="16" styleClass="card">
+            <Label text="CURRENT CONNECTION CONTEXT" styleClass="title-small" />
+
+            <GridPane hgap="16" vgap="12">
+                <columnConstraints>
+                    <ColumnConstraints prefWidth="160" />
+                    <ColumnConstraints hgrow="ALWAYS" />
+                </columnConstraints>
+
+                <Label text="Connected Node:" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="text-secondary" />
+                <Label fx:id="currentServerLabel" text="-" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="text-mono" />
+
+                <Label text="Current Channel:" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="text-secondary" />
+                <Label fx:id="currentSessionLabel" text="-" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="text-mono" />
+
+                <Label text="User Identity:" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="text-secondary" />
+                <Label fx:id="currentUsernameLabel" text="-" GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="text-mono" />
+            </GridPane>
+        </VBox>
+
+        <VBox spacing="12" styleClass="card">
+            <Label text="DISTRIBUTED ARCHITECTURE DESIGN" styleClass="title-small" />
+            <Label text="• Physical Server Node A (Port 1099/1100) + Database A&#10;• Physical Server Node B (Port 2099/2100) + Database B&#10;• Bidirectional asynchronous RMI replication with loop protection&#10;• Server-side socket inspection for observed client IP tracking&#10;• Resilient offline fallback for seamless coursework demonstration"
+                   styleClass="text-secondary" wrapText="true" />
+        </VBox>
+    </VBox>
+</StackPane>

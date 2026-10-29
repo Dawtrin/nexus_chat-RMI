@@ -1,0 +1,44 @@
+# =============================================================================
+# NEXUS Distributed Chat — Server Configuration Template
+# Copy this file to 'application.properties' and adjust for your local machine.
+# =============================================================================
+
+# Server Identity & Binding
+# Unique identifier across the cluster (e.g. server-a, server-b)
+server.id=server-a
+
+# Network address this server advertises to clients and peers.
+# For multi-machine deployment, replace with your reachable LAN IP (e.g. 192.168.1.101).
+# DO NOT leave as 127.0.0.1 for multi-machine setups.
+server.advertised.host=127.0.0.1
+
+# RMI Registry port (standard default is 1099, Server B can use 2099 on single-machine test)
+server.rmi.registry.port=1099
+
+# RMI Exported Service port (fixed port for firewall traversal)
+server.rmi.service.port=1100
+
+# Administrator token required for MonitoringRemote API access
+server.admin.token=nexus-admin-token-change-me
+
+# -----------------------------------------------------------------------------
+# Peer Server Configuration (for bidirectional replication)
+# -----------------------------------------------------------------------------
+server.peer.id=server-b
+server.peer.host=127.0.0.1
+server.peer.registry.port=2099
+server.peer.service.port=2100
+
+# -----------------------------------------------------------------------------
+# Database Configuration (MySQL / MariaDB)
+# -----------------------------------------------------------------------------
+# Enable database persistence (set to false to run with in-memory storage fallback)
+database.enabled=false
+database.host=127.0.0.1
+database.port=3306
+database.name=nexus_chat_a
+database.username=nexus_user
+database.password=nexus_password_placeholder
+database.pool.max-size=10
+database.pool.min-idle=2
+database.pool.connection-timeout-ms=3000
