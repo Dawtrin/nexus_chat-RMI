@@ -39,7 +39,12 @@ public class AdminMonitoringService {
     private final StringProperty statusMessage = new SimpleStringProperty("Not connected to monitoring endpoint");
 
     public void fetchDiagnostics(String host, int port, String adminToken, Consumer<Boolean> onComplete) {
-        statusMessage.set("Querying monitoring service on " + host + ":" + port + "...");
+        String queryingMsg = "Querying monitoring service on " + host + ":" + port + "...";
+        if (javafx.application.Platform.isFxApplicationThread()) {
+            statusMessage.set(queryingMsg);
+        } else {
+            javafx.application.Platform.runLater(() -> statusMessage.set(queryingMsg));
+        }
 
         FxAsync.execute(() -> {
             Registry registry = LocateRegistry.getRegistry(host, port);

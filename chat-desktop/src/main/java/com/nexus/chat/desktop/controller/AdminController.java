@@ -113,6 +113,13 @@ public class AdminController {
             }
         });
 
+        // Ensure auto-refresh stops if view is detached from scene
+        adminStatusLabel.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene == null) {
+                stopAutoRefresh();
+            }
+        });
+
         // Initialize honest default empty state
         updateServerKpis(null);
         updateDatabaseKpis(null);
@@ -185,7 +192,7 @@ public class AdminController {
             return t;
         });
 
-        autoRefreshExecutor.scheduleAtFixedRate(this::onRefreshClicked, 3, 3, TimeUnit.SECONDS);
+        autoRefreshExecutor.scheduleAtFixedRate(() -> Platform.runLater(this::onRefreshClicked), 3, 3, TimeUnit.SECONDS);
     }
 
     private void stopAutoRefresh() {
