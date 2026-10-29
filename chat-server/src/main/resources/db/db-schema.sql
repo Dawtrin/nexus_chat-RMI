@@ -1,5 +1,5 @@
 -- =============================================================================
--- NEXUS Distributed Chat — Database Schema
+-- NEXUS Distributed Chat — Database Schema (Phase 2)
 -- Compatible with MySQL 8.0+ and MariaDB 10.5+
 -- =============================================================================
 
@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS chat_rooms (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS chat_messages (
+    local_sequence BIGINT AUTO_INCREMENT UNIQUE KEY,
     message_id CHAR(36) PRIMARY KEY,
     room_id VARCHAR(100) NOT NULL,
     sender_id VARCHAR(100) NOT NULL,
@@ -22,6 +23,7 @@ CREATE TABLE IF NOT EXISTS chat_messages (
     message_type VARCHAR(30) NOT NULL,
     received_at TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     UNIQUE KEY uq_origin_sequence (origin_server_id, origin_sequence),
+    INDEX idx_room_local_seq (room_id, local_sequence),
     INDEX idx_room_created (room_id, created_at),
     CONSTRAINT fk_message_room FOREIGN KEY (room_id) REFERENCES chat_rooms (room_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -40,10 +42,33 @@ CREATE TABLE IF NOT EXISTS client_sessions (
     INDEX idx_session_last_seen (last_seen_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS replication_outbox (
+    outbox_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    message_id CHAR(36) NOT NULL,
+    room_id VARCHAR(100) NOT NULL,
+    sender_id VARCHAR(100) NOT NULL,
+    sender_name VARCHAR(100) NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP(3) NOT NULL,
+    origin_server_id VARCHAR(100) NOT NULL,
+    origin_sequence BIGINT NOT NULL,
+    message_type VARCHAR(30) NOT NULL,
+    target_peer_id VARCHAR(100) NOT NULL,
+    status VARCHAR(30) NOT NULL DEFAULT 'PENDING',
+    retry_count INT NOT NULL DEFAULT 0,
+    last_retry_at TIMESTAMP(3) NULL,
+    last_error TEXT,
+    queued_at TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    INDEX idx_outbox_peer_status (target_peer_id, status),
+    INDEX idx_outbox_msg (message_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS replication_state (
     peer_server_id VARCHAR(100) PRIMARY KEY,
-    last_success_at TIMESTAMP(3),
+    last_replicated_origin_seq BIGINT NOT NULL DEFAULT 0,
+    last_success_at TIMESTAMP(3) NULL,
     last_sync_status VARCHAR(50),
+    pending_count INT NOT NULL DEFAULT 0,
     last_error TEXT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

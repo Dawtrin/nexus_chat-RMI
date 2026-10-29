@@ -18,7 +18,8 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- * Implementation of the server-to-server ReplicationRemote RMI interface.
+ * Implementation of the server-to-server ReplicationRemote RMI interface with batch processing
+ * and strict loop protection.
  */
 public class ReplicationServiceImpl implements ReplicationRemote {
     private static final Logger log = LoggerFactory.getLogger(ReplicationServiceImpl.class);
@@ -67,6 +68,29 @@ public class ReplicationServiceImpl implements ReplicationRemote {
     }
 
     @Override
+    public OperationResult<Void> replicateBatch(List<ChatMessageDTO> messages, String sourceServerId) throws RemoteException {
+        if (messages == null || messages.isEmpty()) {
+            return OperationResult.ok("Empty batch accepted");
+        }
+
+        int count = 0;
+        for (ChatMessageDTO msg : messages) {
+            if (msg != null && msg.getMessageId() != null) {
+                if (!messageRepository.existsById(msg.getMessageId())) {
+                    messageRepository.save(msg);
+                    count++;
+                }
+            }
+        }
+
+        metrics.incrementMessagesProcessed();
+        logService.logEvent(EventSeverity.INFO, "REPLICATION",
+                String.format("Accepted replicated batch (%d new messages) from peer %s", count, sourceServerId));
+
+        return OperationResult.ok("Batch of " + count + " messages persisted");
+    }
+
+    @Override
     public List<ChatMessageDTO> getMessagesAfter(String originServerId, long afterSequence, int limit) throws RemoteException {
         int boundedLimit = Math.min(Math.max(limit, 1), 500);
         return messageRepository.findByOriginAfterSequence(originServerId, afterSequence, boundedLimit);
@@ -88,7 +112,10 @@ public class ReplicationServiceImpl implements ReplicationRemote {
                 dbStatus,
                 metrics.getUptimeSeconds(),
                 metrics.getStartedAt(),
-                0
+                0,
+                0,
+                null,
+                messageRepository.getPersistenceMode()
         );
     }
 }

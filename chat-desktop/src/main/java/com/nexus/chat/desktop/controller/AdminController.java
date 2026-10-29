@@ -132,7 +132,7 @@ public class AdminController {
             kpiServerStatus.setText(status.getServerStatus().name());
             kpiServerStatus.setStyle(status.getServerStatus().name().equals("ONLINE") ? "-fx-text-fill: -color-success;" : "-fx-text-fill: -color-warning;");
 
-            kpiPeerStatus.setText(status.getPeerStatus().name());
+            kpiPeerStatus.setText(status.getPeerStatus().name() + " (" + status.getPendingReplicationCount() + " queued)");
             kpiPeerEndpoint.setText(status.getAdvertisedRmiHost() + ":" + status.getRegistryPort());
             kpiActiveSessions.setText(String.valueOf(status.getActiveSessionCount()));
             kpiUptime.setText(formatUptime(status.getUptimeSeconds()));
@@ -144,7 +144,9 @@ public class AdminController {
             kpiDbStatus.setText("NOT MONITORED");
             kpiDbName.setText("—");
         } else {
-            kpiDbStatus.setText(db.isConnected() ? "CONNECTED (MySQL)" : "IN-MEMORY FALLBACK");
+            String mode = db.getPersistenceMode() != null ? db.getPersistenceMode() : (db.isConnected() ? "MYSQL_DURABLE" : "IN_MEMORY_FALLBACK");
+            kpiDbStatus.setText(mode);
+            kpiDbStatus.setStyle(mode.contains("DURABLE") ? "-fx-text-fill: -color-success;" : "-fx-text-fill: -color-warning;");
             kpiDbName.setText(db.getDatabaseName() + " (" + db.getActiveConnections() + " active)");
         }
     }

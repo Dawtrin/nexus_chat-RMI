@@ -22,6 +22,7 @@ public class DatabaseHealthDTO implements Serializable {
     private final int totalConnections;
     private final String lastError;
     private final Instant lastCheckedAt;
+    private final String persistenceMode;
 
     public DatabaseHealthDTO(String databaseName,
                              boolean connected,
@@ -31,6 +32,19 @@ public class DatabaseHealthDTO implements Serializable {
                              int totalConnections,
                              String lastError,
                              Instant lastCheckedAt) {
+        this(databaseName, connected, status, activeConnections, idleConnections, totalConnections, lastError, lastCheckedAt,
+                connected ? "MYSQL_DURABLE" : "IN_MEMORY_FALLBACK");
+    }
+
+    public DatabaseHealthDTO(String databaseName,
+                             boolean connected,
+                             ServerStatus status,
+                             int activeConnections,
+                             int idleConnections,
+                             int totalConnections,
+                             String lastError,
+                             Instant lastCheckedAt,
+                             String persistenceMode) {
         this.databaseName = Objects.requireNonNull(databaseName, "databaseName cannot be null");
         this.connected = connected;
         this.status = status != null ? status : ServerStatus.UNKNOWN;
@@ -39,6 +53,7 @@ public class DatabaseHealthDTO implements Serializable {
         this.totalConnections = totalConnections;
         this.lastError = lastError != null ? lastError : "";
         this.lastCheckedAt = lastCheckedAt != null ? lastCheckedAt : Instant.now();
+        this.persistenceMode = persistenceMode != null ? persistenceMode : (connected ? "MYSQL_DURABLE" : "IN_MEMORY_FALLBACK");
     }
 
     public String getDatabaseName() {
@@ -73,12 +88,17 @@ public class DatabaseHealthDTO implements Serializable {
         return lastCheckedAt;
     }
 
+    public String getPersistenceMode() {
+        return persistenceMode;
+    }
+
     @Override
     public String toString() {
         return "DatabaseHealthDTO{" +
                 "databaseName='" + databaseName + '\'' +
                 ", connected=" + connected +
                 ", status=" + status +
+                ", persistenceMode='" + persistenceMode + '\'' +
                 ", active=" + activeConnections +
                 ", idle=" + idleConnections +
                 '}';

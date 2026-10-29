@@ -14,7 +14,7 @@ import java.util.List;
 public interface ReplicationRemote extends Remote {
 
     /**
-     * Receives and idempotently stores a message replicated from a peer server node.
+     * Receives and idempotently stores a single message replicated from a peer server node.
      *
      * @param message Replicated chat message
      * @param sourceServerId Identifier of the source server sending the replication
@@ -22,6 +22,16 @@ public interface ReplicationRemote extends Remote {
      * @throws RemoteException on network or RMI failure
      */
     OperationResult<Void> replicateMessage(ChatMessageDTO message, String sourceServerId) throws RemoteException;
+
+    /**
+     * Receives and idempotently stores a batch of messages replicated from a peer server node.
+     *
+     * @param messages List of replicated chat messages
+     * @param sourceServerId Identifier of the source server sending the replication
+     * @return OperationResult indicating batch delivery status
+     * @throws RemoteException on network or RMI failure
+     */
+    OperationResult<Void> replicateBatch(List<ChatMessageDTO> messages, String sourceServerId) throws RemoteException;
 
     /**
      * Retrieves messages originating from a specific server after an acknowledged sequence cursor.

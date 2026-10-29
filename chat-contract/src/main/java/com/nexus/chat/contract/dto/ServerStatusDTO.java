@@ -27,6 +27,9 @@ public class ServerStatusDTO implements Serializable {
     private final long uptimeSeconds;
     private final Instant startedAt;
     private final int activeSessionCount;
+    private final int pendingReplicationCount;
+    private final Instant lastReplicationTimestamp;
+    private final String persistenceMode;
 
     public ServerStatusDTO(String serverId,
                            String hostname,
@@ -41,6 +44,26 @@ public class ServerStatusDTO implements Serializable {
                            long uptimeSeconds,
                            Instant startedAt,
                            int activeSessionCount) {
+        this(serverId, hostname, configuredAddress, bindAddress, advertisedRmiHost, registryPort, servicePort,
+                serverStatus, peerStatus, databaseStatus, uptimeSeconds, startedAt, activeSessionCount, 0, null, "IN_MEMORY_FALLBACK");
+    }
+
+    public ServerStatusDTO(String serverId,
+                           String hostname,
+                           String configuredAddress,
+                           String bindAddress,
+                           String advertisedRmiHost,
+                           int registryPort,
+                           int servicePort,
+                           ServerStatus serverStatus,
+                           ServerStatus peerStatus,
+                           ServerStatus databaseStatus,
+                           long uptimeSeconds,
+                           Instant startedAt,
+                           int activeSessionCount,
+                           int pendingReplicationCount,
+                           Instant lastReplicationTimestamp,
+                           String persistenceMode) {
         this.serverId = Objects.requireNonNull(serverId, "serverId cannot be null");
         this.hostname = hostname != null ? hostname : "UNKNOWN";
         this.configuredAddress = configuredAddress != null ? configuredAddress : "UNKNOWN";
@@ -54,6 +77,9 @@ public class ServerStatusDTO implements Serializable {
         this.uptimeSeconds = uptimeSeconds;
         this.startedAt = startedAt != null ? startedAt : Instant.now();
         this.activeSessionCount = activeSessionCount;
+        this.pendingReplicationCount = pendingReplicationCount;
+        this.lastReplicationTimestamp = lastReplicationTimestamp;
+        this.persistenceMode = persistenceMode != null ? persistenceMode : "IN_MEMORY_FALLBACK";
     }
 
     public String getServerId() {
@@ -108,6 +134,18 @@ public class ServerStatusDTO implements Serializable {
         return activeSessionCount;
     }
 
+    public int getPendingReplicationCount() {
+        return pendingReplicationCount;
+    }
+
+    public Instant getLastReplicationTimestamp() {
+        return lastReplicationTimestamp;
+    }
+
+    public String getPersistenceMode() {
+        return persistenceMode;
+    }
+
     @Override
     public String toString() {
         return "ServerStatusDTO{" +
@@ -115,7 +153,9 @@ public class ServerStatusDTO implements Serializable {
                 ", serverStatus=" + serverStatus +
                 ", peerStatus=" + peerStatus +
                 ", databaseStatus=" + databaseStatus +
+                ", persistenceMode='" + persistenceMode + '\'' +
                 ", activeSessions=" + activeSessionCount +
+                ", pendingReplication=" + pendingReplicationCount +
                 ", uptime=" + uptimeSeconds + "s" +
                 '}';
     }

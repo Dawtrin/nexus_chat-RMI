@@ -7,10 +7,12 @@ import com.nexus.chat.server.monitoring.ServerMetrics;
 import com.nexus.chat.server.monitoring.SystemLogService;
 import com.nexus.chat.server.repository.ChatRoomRepository;
 import com.nexus.chat.server.repository.ClientSessionRepository;
-import com.nexus.chat.server.repository.InMemoryClientSessionRepository;
 import com.nexus.chat.server.repository.JdbcChatRoomRepository;
+import com.nexus.chat.server.repository.JdbcClientSessionRepository;
 import com.nexus.chat.server.repository.JdbcMessageRepository;
+import com.nexus.chat.server.repository.JdbcOutboxRepository;
 import com.nexus.chat.server.repository.MessageRepository;
+import com.nexus.chat.server.repository.OutboxRepository;
 import com.nexus.chat.server.rmi.RmiRegistryManager;
 import com.nexus.chat.server.service.ChatServiceImpl;
 import com.nexus.chat.server.service.ClientSessionManager;
@@ -43,11 +45,14 @@ public class ServerApplication {
             // Repositories
             MessageRepository messageRepository = new JdbcMessageRepository(databaseManager);
             ChatRoomRepository chatRoomRepository = new JdbcChatRoomRepository(databaseManager);
-            ClientSessionRepository sessionRepository = new InMemoryClientSessionRepository();
+            ClientSessionRepository sessionRepository = new JdbcClientSessionRepository(databaseManager);
+            OutboxRepository outboxRepository = new JdbcOutboxRepository(databaseManager);
 
             // Services
             ClientSessionManager sessionManager = new ClientSessionManager(config.getServerId(), sessionRepository, logService);
-            PeerReplicationManager replicationManager = new PeerReplicationManager(config, metrics, logService);
+            PeerReplicationManager replicationManager = new PeerReplicationManager(
+                    config, outboxRepository, messageRepository, metrics, logService
+            );
 
             ChatServiceImpl chatService = new ChatServiceImpl(
                     config, messageRepository, chatRoomRepository, sessionManager,
@@ -59,8 +64,8 @@ public class ServerApplication {
             );
 
             MonitoringServiceImpl monitoringService = new MonitoringServiceImpl(
-                    config, databaseManager, sessionManager, replicationManager,
-                    metrics, logService
+                    config, databaseManager, messageRepository, sessionManager,
+                    replicationManager, metrics, logService
             );
 
             // RMI Registry and Service Export
@@ -92,11 +97,11 @@ public class ServerApplication {
 
             log.info("=================================================================");
             log.info(" NEXUS SERVER '{}' STARTED SUCCESSFULLY", config.getServerId().toUpperCase());
-            log.info(" Advertised Host: {}", config.getAdvertisedHost());
-            log.info(" RMI Registry:    {}", config.getRmiRegistryPort());
-            log.info(" RMI Service:     {}", config.getRmiServicePort());
-            log.info(" Configured Peer: {} ({}:{})", config.getPeerId(), config.getPeerHost(), config.getPeerRegistryPort());
-            log.info(" Database State:  {}", databaseManager.isConnected() ? "CONNECTED (MySQL)" : "IN-MEMORY FALLBACK");
+            log.info(" Advertised Host:  {}", config.getAdvertisedHost());
+            log.info(" RMI Registry:     {}", config.getRmiRegistryPort());
+            log.info(" RMI Service:      {}", config.getRmiServicePort());
+            log.info(" Configured Peer:  {} ({}:{})", config.getPeerId(), config.getPeerHost(), config.getPeerRegistryPort());
+            log.info(" Persistence Mode: {}", messageRepository.getPersistenceMode());
             log.info("=================================================================");
 
         } catch (Exception e) {

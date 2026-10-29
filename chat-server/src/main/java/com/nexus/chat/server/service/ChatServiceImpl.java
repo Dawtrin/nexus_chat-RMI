@@ -106,7 +106,7 @@ public class ChatServiceImpl implements ChatRemote {
 
         ClientSessionDTO session = sessionOpt.get();
         String messageId = UUID.randomUUID().toString();
-        long sequence = messageRepository.getNextSequence(config.getServerId());
+        long originSeq = messageRepository.getNextSequence(config.getServerId());
 
         ChatMessageDTO message = new ChatMessageDTO(
                 messageId,
@@ -116,19 +116,21 @@ public class ChatServiceImpl implements ChatRemote {
                 content.trim(),
                 Instant.now(),
                 config.getServerId(),
-                sequence,
+                originSeq,
                 MessageType.CHAT
         );
 
-        // 1. Save locally
-        messageRepository.save(message);
+        // 1. Save locally with monotonic arrival sequence
+        ChatMessageDTO saved = messageRepository.save(message);
         metrics.incrementMessagesProcessed();
         sessionManager.recordHeartbeat(sessionId);
 
-        // 2. Submit for asynchronous peer replication (with loop prevention)
-        replicationManager.submitReplication(message);
+        // 2. Submit for durable asynchronous peer replication via outbox
+        replicationManager.submitReplication(saved);
 
-        return OperationResult.success("Message sent", message);
+        String durabilityNotice = messageRepository.getPersistenceMode().equals("MYSQL_DURABLE")
+                ? "Durable MySQL" : "Memory Fallback";
+        return OperationResult.success("Message accepted (" + durabilityNotice + ")", saved);
     }
 
     @Override

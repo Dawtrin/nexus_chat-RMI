@@ -23,6 +23,7 @@ public class ChatMessageDTO implements Serializable {
     private final String originServerId;
     private final long originSequence;
     private final MessageType messageType;
+    private final long localSequence;
 
     public ChatMessageDTO(String messageId,
                           String roomId,
@@ -33,6 +34,19 @@ public class ChatMessageDTO implements Serializable {
                           String originServerId,
                           long originSequence,
                           MessageType messageType) {
+        this(messageId, roomId, senderId, senderName, content, createdAt, originServerId, originSequence, messageType, 0L);
+    }
+
+    public ChatMessageDTO(String messageId,
+                          String roomId,
+                          String senderId,
+                          String senderName,
+                          String content,
+                          Instant createdAt,
+                          String originServerId,
+                          long originSequence,
+                          MessageType messageType,
+                          long localSequence) {
         this.messageId = Objects.requireNonNull(messageId, "messageId cannot be null");
         this.roomId = Objects.requireNonNull(roomId, "roomId cannot be null");
         this.senderId = Objects.requireNonNull(senderId, "senderId cannot be null");
@@ -42,6 +56,7 @@ public class ChatMessageDTO implements Serializable {
         this.originServerId = Objects.requireNonNull(originServerId, "originServerId cannot be null");
         this.originSequence = originSequence;
         this.messageType = messageType != null ? messageType : MessageType.CHAT;
+        this.localSequence = localSequence;
     }
 
     public String getMessageId() {
@@ -80,6 +95,10 @@ public class ChatMessageDTO implements Serializable {
         return messageType;
     }
 
+    public long getLocalSequence() {
+        return localSequence;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -102,6 +121,7 @@ public class ChatMessageDTO implements Serializable {
                 ", createdAt=" + createdAt +
                 ", originServerId='" + originServerId + '\'' +
                 ", originSequence=" + originSequence +
+                ", localSequence=" + localSequence +
                 ", messageType=" + messageType +
                 '}';
     }

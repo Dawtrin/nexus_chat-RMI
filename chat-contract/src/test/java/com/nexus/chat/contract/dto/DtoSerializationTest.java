@@ -36,13 +36,15 @@ class DtoSerializationTest {
                 Instant.now(),
                 "server-a",
                 101L,
-                MessageType.CHAT
+                MessageType.CHAT,
+                42L
         );
 
         ChatMessageDTO deserialized = roundTrip(original);
         assertThat(deserialized).isEqualTo(original);
         assertThat(deserialized.getContent()).isEqualTo("Hello distributed world!");
         assertThat(deserialized.getOriginSequence()).isEqualTo(101L);
+        assertThat(deserialized.getLocalSequence()).isEqualTo(42L);
     }
 
     @Test
@@ -80,13 +82,18 @@ class DtoSerializationTest {
                 ServerStatus.ONLINE,
                 3600L,
                 Instant.now(),
-                5
+                5,
+                3,
+                Instant.now(),
+                "MYSQL_DURABLE"
         );
 
         ServerStatusDTO deserialized = roundTrip(original);
         assertThat(deserialized.getServerId()).isEqualTo("server-a");
         assertThat(deserialized.getServerStatus()).isEqualTo(ServerStatus.ONLINE);
         assertThat(deserialized.getActiveSessionCount()).isEqualTo(5);
+        assertThat(deserialized.getPendingReplicationCount()).isEqualTo(3);
+        assertThat(deserialized.getPersistenceMode()).isEqualTo("MYSQL_DURABLE");
     }
 
     @Test

@@ -180,6 +180,12 @@ public class ChatClientService implements AutoCloseable {
             }
         } catch (Exception e) {
             log.warn("Polling / Heartbeat failed: {}", e.getMessage());
+            Platform.runLater(() -> {
+                if (connectionState.get() == ConnectionState.CONNECTED) {
+                    connectionState.set(ConnectionState.RECONNECTING);
+                    statusMessage.set("Connection interrupted. Attempting reconnection...");
+                }
+            });
         }
     }
 
@@ -187,8 +193,9 @@ public class ChatClientService implements AutoCloseable {
         if (receivedMessageIds.add(dto.getMessageId())) {
             boolean isOwn = dto.getSenderName().equalsIgnoreCase(currentUsername.get());
             messages.add(new ChatMessageModel(dto, isOwn));
-            if (dto.getOriginSequence() > lastSeenSequence) {
-                lastSeenSequence = dto.getOriginSequence();
+            long seq = dto.getLocalSequence() > 0 ? dto.getLocalSequence() : dto.getOriginSequence();
+            if (seq > lastSeenSequence) {
+                lastSeenSequence = seq;
             }
         }
     }

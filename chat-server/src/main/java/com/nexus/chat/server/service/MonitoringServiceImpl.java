@@ -10,18 +10,21 @@ import com.nexus.chat.server.config.ServerConfig;
 import com.nexus.chat.server.database.DatabaseManager;
 import com.nexus.chat.server.monitoring.ServerMetrics;
 import com.nexus.chat.server.monitoring.SystemLogService;
+import com.nexus.chat.server.repository.MessageRepository;
 
 import java.net.InetAddress;
 import java.rmi.RemoteException;
 import java.util.List;
 
 /**
- * Implementation of the administrative MonitoringRemote RMI interface.
+ * Implementation of the administrative MonitoringRemote RMI interface
+ * providing authentic cluster telemetry and health observations.
  */
 public class MonitoringServiceImpl implements MonitoringRemote {
 
     private final ServerConfig config;
     private final DatabaseManager databaseManager;
+    private final MessageRepository messageRepository;
     private final ClientSessionManager sessionManager;
     private final PeerReplicationManager replicationManager;
     private final ServerMetrics metrics;
@@ -29,12 +32,14 @@ public class MonitoringServiceImpl implements MonitoringRemote {
 
     public MonitoringServiceImpl(ServerConfig config,
                                  DatabaseManager databaseManager,
+                                 MessageRepository messageRepository,
                                  ClientSessionManager sessionManager,
                                  PeerReplicationManager replicationManager,
                                  ServerMetrics metrics,
                                  SystemLogService logService) {
         this.config = config;
         this.databaseManager = databaseManager;
+        this.messageRepository = messageRepository;
         this.sessionManager = sessionManager;
         this.replicationManager = replicationManager;
         this.metrics = metrics;
@@ -71,7 +76,10 @@ public class MonitoringServiceImpl implements MonitoringRemote {
                 dbStatus,
                 metrics.getUptimeSeconds(),
                 metrics.getStartedAt(),
-                sessionManager.getActiveSessionCount()
+                sessionManager.getActiveSessionCount(),
+                replicationManager.getPendingOutboxCount(),
+                replicationManager.getLastSuccessfulReplication(),
+                messageRepository.getPersistenceMode()
         );
     }
 

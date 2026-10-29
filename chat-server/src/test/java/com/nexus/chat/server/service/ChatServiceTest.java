@@ -36,9 +36,10 @@ class ChatServiceTest {
         MessageRepository messageRepo = new JdbcMessageRepository(dbManager);
         ChatRoomRepository roomRepo = new JdbcChatRoomRepository(dbManager);
         ClientSessionRepository sessionRepo = new InMemoryClientSessionRepository();
+        com.nexus.chat.server.repository.OutboxRepository outboxRepo = new com.nexus.chat.server.repository.JdbcOutboxRepository(dbManager);
 
         ClientSessionManager sessionManager = new ClientSessionManager(config.getServerId(), sessionRepo, logService);
-        PeerReplicationManager replicationManager = new PeerReplicationManager(config, metrics, logService);
+        PeerReplicationManager replicationManager = new PeerReplicationManager(config, outboxRepo, messageRepo, metrics, logService);
 
         chatService = new ChatServiceImpl(config, messageRepo, roomRepo, sessionManager, replicationManager, metrics, logService);
         replicationService = new ReplicationServiceImpl(config, messageRepo, dbManager, metrics, logService);
